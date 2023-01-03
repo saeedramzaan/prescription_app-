@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Appointment Details</title>
+    <title>Invoice Details</title>
 </head>
 
 <body>
@@ -14,9 +14,6 @@
     ?>
     <p> {{ $detail['0'] }}</p>
     <p> {{ $detail['1'] }}</p>
-    <p> {{ $detail['2'] }}</p>
-    <p> {{ $detail['3'] }}</p>
-    <p> {{ $detail['4'] }}</p>
 
     </p>
 

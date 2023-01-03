@@ -1,27 +1,26 @@
-@extends('layouts.app')
+@extends('layouts.app_par')
 
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Update Appointment') }}</div>
+                    <div class="card-header">{{ __('Add Product') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('time.update', $time->id) }}">
+                        <form method="POST" action="{{ route('product.store') }}">
                             @csrf
-                            @method('PUT')
+
                             <div class="row mb-3">
                                 <label for="name"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Start time') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="time"
-                                        class="form-control @error('start_time') is-invalid @enderror" name="start_time"
-                                        value="{{ $convert_start_time = date('H:i', strtotime($time->start_time)) }}"
-                                        required autocomplete="name" autofocus>
+                                    <input id="name" type="text"
+                                        class="form-control @error('name') is-invalid @enderror" name="name"
+                                        value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-                                    @error('start_time')
+                                    @error('name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -31,15 +30,14 @@
 
                             <div class="row mb-3">
                                 <label for="email"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('End Time') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Price') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="end_time" type="time"
-                                        class="form-control @error('end_time') is-invalid @enderror" name="end_time"
-                                        value="{{ $convert_end_time = date('H:i', strtotime($time->end_time)) }}" required
-                                        autocomplete="email">
+                                    <input id="name" type="text"
+                                        class="form-control @error('price') is-invalid @enderror" name="price"
+                                        value="{{ old('price') }}" required autocomplete="price">
 
-                                    @error('end_time')
+                                    @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -49,34 +47,20 @@
 
                             <div class="row mb-3">
                                 <label for="password"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Duration') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Quantity') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="duration" type="text" value={{ $time->duration }}
-                                        class="form-control @error('duration') is-invalid @enderror" name="duration"
+                                    <input id="duration" type="text"
+                                        class="form-control @error('qty') is-invalid @enderror" name="qty"
                                         required>
 
-                                    @error('password')
+                                    @error('qty')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
                             </div>
-
-                            <div class="row mb-3">
-                                <label for="password-confirm"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Day') }}</label>
-
-                                <div class="col-md-6">
-
-                                    <input id="day" type="text" value={{ $time->day }}
-                                        class="form-control @error('day') is-invalid @enderror" name="day" required>
-
-                                </div>
-                            </div>
-
-
 
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success">
@@ -87,7 +71,7 @@
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Update') }}
+                                        {{ __('Add') }}
                                     </button>
                                 </div>
                             </div>

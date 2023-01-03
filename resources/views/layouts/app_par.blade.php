@@ -69,10 +69,16 @@
                                     </form>
 
                                     <a class="dropdown-item" href="{{ route('viewPatient') }}">
-                                     {{ __('View Patient Info') }}
+                                     {{ __('View Prescription Status') }}
                                  </a>
 
-                               
+                                 <a class="dropdown-item" href="{{ route('home') }}">
+                                    {{ __('View Prescriptions') }}
+                                </a>
+
+                                <a class="dropdown-item" href="/product">
+                                    {{ __('Product Details') }}
+                                </a>
                                 </div>
                             </li>
                         @endguest

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController; 
-use App\Http\Controllers\TimeController; 
+use App\Http\Controllers\ProductController; 
 use App\Http\Controllers\FormController; 
 
 /*
@@ -15,7 +15,10 @@ use App\Http\Controllers\FormController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('config:cache');
+    return 'DONE'; //Return anything
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,19 +30,15 @@ Route::resource('patient', PatientController::class);
 
 Route::resource('/home', FormController::class);
 
-Route::get('/patientInfo', [PatientController::class, 'patientInfo'])->name('patientInfo');
+Route::get('/productInfo', [PatientController::class, 'productInfo'])->name('productInfo');
 
-Route::resource('time', TimeController::class);
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('product', ProductController::class);
 
 Route::get('/create', [PatientController::class,'create'])->name('test');
 
 Route::get('/search', [PatientController::class,'search'] );
 
-Route::get('/del/{id}', [TimeController::class,'delete'] )->name('del');
-
-Route::get('/validation', [TimeController::class,'day_existed'])->name('day_exist');
+Route::get('/del/{id}', [ProductController::class,'delete'] )->name('del');
 
 Route::get('/showItem', [FormController::class,'itemInfo'])->name('item_info');
 

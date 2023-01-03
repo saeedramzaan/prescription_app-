@@ -11,7 +11,6 @@
             }
         </style>
     <head>
-        <title>Filter Appointments</title>
         <meta charset="utf-8">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="app-url" content="{{ url('/') }}">
@@ -61,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <h2 class="text-center mt-5 mb-3">Filter Appiontments</h2>
+          
         </section>
 
 
@@ -240,7 +239,25 @@ $.ajax({
 
         }
     },
-    error: function (response) {
+    error: function (data) {
+
+        var errors = $.parseJSON(data.responseText);
+
+        alert(errors);
+
+    //     if( data.status === 422 ) {
+    //         var errors = $.parseJSON(data.responseText);
+
+    //         console.log(errors);
+    //    // console.log($response.message.);
+
+    //     Swal.fire({
+    //             icon: 'info',
+    //             title: 'Hey',
+    //             text: "test",
+    //             footer: ''
+    //         })
+    //     }
 
     }
 });

@@ -33,9 +33,6 @@ class HomeController extends Controller
         }else{
           
             return view('home');
-            // $patients = patient::all();
-
-            // return json_encode(array('data' => $patients));
         }
     }
 }

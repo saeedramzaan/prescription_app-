@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_par')
 
 
 
@@ -6,10 +6,10 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-center" style="display: flex; justify-content:center">
-                <h2>Set Appointment Day and Time</h2>
+                <h2>Update Product</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" href="http://localhost:8000/time/create"> Add Day </a>
+                <a class="btn btn-success" href="http://localhost:8000/product/create"> Add Product </a>
             </div>
 
         </div>
@@ -33,22 +33,20 @@
             <th>Day</th>
         </tr>
 
-        @foreach ($times as $time)
+        @foreach ($products as $pro)
             <tr>
 
 
-                <td>{{ $time->id }}</td>
-                <td> {{ $convert_start_time = date('H:i', strtotime($time->start_time)) }} </td>
-                <td> {{ $convert_end_time = date('H:i', strtotime($time->end_time)) }} </td>
-                <td>{{ $time->duration }}</td>
-                <th> {{ $time->day }}
-
+                <td>{{ $pro->id }}</td>
+                <td> {{ $pro->drug_name }} </td>
+                <td> {{ $pro->qty }} </td>
+                <td>{{ $pro->price }}</td>
                 <td>
 
                     <form action="" method="POST">
 
-                        <a class="btn btn-primary" href="{{ route('time.edit', $time->id) }}">Edit</a>
-                        <a class="btn btn-danger" href="{{ route('del', $time->id) }}">Delete</a>
+                        <a class="btn btn-primary" href="{{ route('product.edit', $pro->id) }}">Edit</a>
+                        <a class="btn btn-danger" href="{{ route('del', $pro->id) }}">Delete</a>
 
                     </form>
 

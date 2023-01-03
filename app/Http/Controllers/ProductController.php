@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\time;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
-class TimeController extends Controller
+class ProductController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -25,8 +26,8 @@ class TimeController extends Controller
      */
     public function index()
     {
-        $times = time::all();
-        return view('viewTime', compact('times'));
+        $products = Product::all();
+        return view('viewProduct', compact('products'));
     }
 
     /**
@@ -36,17 +37,17 @@ class TimeController extends Controller
      */
     public function create()
     {
-        return view('createTime');
+        return view('createProduct');
     }
 
-    public function day_existed(){
+    // public function day_existed(){
 
-        $day = ucfirst($this->day); 
+    //     $day = ucfirst($this->day); 
 
-        $day_exist = time::Where('day',$day)->exists();
+    //     $day_exist = time::Where('day',$day)->exists();
 
-        return $day_exist;
-    }
+    //     return $day_exist;
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -56,21 +57,14 @@ class TimeController extends Controller
      */
     public function store(Request $request)
     {
-
-         if($this->day_existed()){
-            
-        return redirect()->back()->with('success', 'Day has already been added');
-         
-        }else{
     
-        $patient = new time();
-        $patient->start_time = $request->start_time;
-        $patient->end_time = $request->end_time;
-        $patient->duration = $request->duration;
-        $patient->day = $request->day;
+        $pro = new Product();
+        $pro->drug_name = $request->name;
+        $pro->price = $request->price;
+        $pro->qty = $request->qty;
+       
+        $pro->save();
 
-        $patient->save();
-        } 
         return redirect()->back()->with('success', 'Data successfully entered');
     }
 
@@ -93,8 +87,8 @@ class TimeController extends Controller
      */
     public function edit($id)
     {
-        $time = time::find($id);
-        return view('updateTime', compact('time'));
+        $product = Product::find($id);
+        return view('updateProduct', compact('product'));
     }
 
     /**
@@ -108,15 +102,14 @@ class TimeController extends Controller
     {
        
 
-        $patient = time::find($id);
-        $patient->start_time = $request->start_time;
-        $patient->end_time = $request->end_time;
-        $patient->duration = $request->duration;
-        $patient->day = $request->day;
-
+        $patient = Product::find($id);
+        $patient->drug_name = $request->drug_name;
+        $patient->price = $request->price;
+        $patient->qty = $request->qty;
+    
         $patient->save();
 
-        return redirect('/time')->with('success', 'Data Successfully Updated');
+        return redirect('/product')->with('success', 'Data Successfully Updated');
     }
 
     /**
@@ -132,8 +125,8 @@ class TimeController extends Controller
 
     public function delete($id)
     {
-        $user = time::find($id);
+        $user = Product::find($id);
         $user->delete();
-        return redirect('/time')->with('success', 'Data Successfully Deleted');
+        return redirect('/product')->with('success', 'Data Successfully Deleted');
     }
 }

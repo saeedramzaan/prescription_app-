@@ -92,7 +92,7 @@
                 class="col-md-4 col-form-label text-md-end">{{ __('Delivery time') }}</label>
 
             <div class="col-md-6">
-                <input id="delivery_time" type="text"
+                <input id="delivery_time" type="time"
                     class="form-control @error('delivery_time') is-invalid @enderror" name="delivery_time"
                     value="{{ old('delivery time') }}" required autocomplete="delivery_time" autofocus>
 

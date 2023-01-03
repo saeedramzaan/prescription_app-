@@ -80,13 +80,14 @@ class FormController extends Controller
          $form->delivery_address= $request->address;
          $form->delivery_time= $request->delivery_time;
          $form->note = $request->note;
+         $form->status = 'Pending';
          $form->patient_id = auth()->user()->id;
          $form->patient_name = auth()->user()->name;
          
         
         $form->save();
 
-        return back()->with('success', 'Your images has been successfully');
+        return back()->with('success', 'Data Has Been Inserted Successfully');
     }
 
     /**
@@ -98,18 +99,7 @@ class FormController extends Controller
     public function show($id)
     {
         return $id; 
-
-        // $quo = Prescription::find($id);
-        // $id = session()->get('id');
-        // $name = session()->get('patient_name');
-        // return $name;
-
-          
-      //  $data = $request->name;
-
        
-       
-
     }
 
     public function imgInfo()
@@ -127,15 +117,12 @@ class FormController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        
+    {  
         $quo = Prescription::find($id);
         $pres_id =  session()->put('pres_id', $id);
         $patient_id =  session()->put('patient_id', $quo->patient_id);
         $patient_name =  session()->put('patient_name', $quo->patient_name);
         return view('quotation', compact('quo'));
-
-        
     }
 
    
@@ -156,19 +143,16 @@ class FormController extends Controller
 
     public function masterUpdate(Request $request){
 
-      //  return $request->id;
-
         $item = item_masters::where('prescription_id',$request->id)->first();        ;
         $item->status = $request->status;
         $item->save();
-        return redirect()->back()->with('message', 'IT WORKS!');
+        return redirect()->back()->with('message', 'Status Updated Successfully!');
     }
 
     public function masterInfo(){
 
         $masterInfo = Item_masters::where('patient_id',auth()->user()->id)->get();
     
-     //   return view('client_status', compact('quo'));
         return json_encode(array('data' => $masterInfo));
     }
 
@@ -181,37 +165,56 @@ class FormController extends Controller
 
     public function saveMaster(Request $request){
        
-
         $pres_id = session()->get('pres_id');
         $patient_id = session()->get('patient_id');
         $patient_name = session()->get('patient_name');
 
+        $patients_detail = Item_details::where('prescription_id', $pres_id)->where('patient_id', $patient_id)->exists();
+        
+        if($patients_detail==0){
 
-         $item  = new Item_masters();
-         $item->prescription_id = $request->id;
-         $item->patient_id = $patient_id;
-         $item->patient_name = $patient_name;
-         $item->discount = "null";
-         $item->status = "null";
-         $item->total = $request->grossTot;
+        return json_encode(array('status' => true,'message' => 'Please update the medicine'));
 
-         $item->save();
+        }else{
 
-        //   $message = " Prescription ID: " . $pres_id . "/" . " Name: " . $request->drug_name . "/" . " Price: " . $request->price . "/" . " Quantity: " . $request->qty . "/" . " Total: " . $request->grossTot;
 
-        //  $details = [
-        //      'title' => 'Appointment Details',
-        //      'body' => $message,
-        //      'header' => 'Content-Type: text/plain; charset=ISO-8859-1\r\n',
-        //  ];
+        $patients = Item_masters::where('prescription_id', $pres_id)->where('patient_id', $patient_id)->exists();    
 
-        //  \Mail::to('saeedramzaan@gmail.com')->send(new \App\Mail\sendMail($details));
+        if($patients==1){
 
-        // return "success";
-         return json_encode(array('status' => true,'message' => 'Data Inserted Successfully'));
-        //return redirect()->back()->with('success', 'Appointment details have been sent to your email. Please check..');
- 
-     
+         return json_encode(array('status' => true,'message' => 'This record has been already added'));
+
+        }else{
+
+            $item = Prescription::where('id',$pres_id)->first();  
+            $item->status = "Done";
+            $item->save();
+
+            $item  = new Item_masters();
+            $item->prescription_id = $pres_id;
+            $item->patient_id = $patient_id;
+            $item->patient_name = $patient_name;
+            $item->discount = "null";
+            $item->status = "Not Updated";
+            $item->total = $request->grossTot;
+   
+            $item->save();
+
+       
+          $message = " Prescription ID: " . $pres_id . "/" . " Total: " . $request->grossTot;
+
+         $details = [
+             'title' => 'Appointment Details',
+             'body' => $message,
+             'header' => 'Content-Type: text/plain; charset=ISO-8859-1\r\n',
+         ];
+
+         \Mail::to('saeedramzaan@gmail.com')->send(new \App\Mail\sendMail($details));
+
+         return json_encode(array('status' => true,'message' => 'Invoice has been sent to Email'));
+
+        }
+    }
     }
 
     public function saveItem(Request $request){
@@ -231,14 +234,10 @@ class FormController extends Controller
          $item->total = $request->total;
          
         
-
-       
-        
         $item->save();
 
-        return redirect()->back()->with('success', 'Appointment details have been sent to your email. Please check..');
+        return redirect()->back()->with('success', 'Item has been updated successfully');
 
-       // return back()->with('success', 'Data has been successfully inserted');
     }
 
     public function itemInfo()
@@ -254,7 +253,6 @@ class FormController extends Controller
         return json_encode(array('data' => $patients, 'tot' => $tot));
 
       
-        // return $tot;
     }
 
     /**
@@ -265,6 +263,6 @@ class FormController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }
